@@ -10,6 +10,7 @@ A real-time cryptocurrency price monitoring application built with Apache Kafka,
 - **PostgreSQL** – Database for storing market data
 - **Streamlit** – Web application for visualization and alerts
 - **Docker & Docker Compose** – Containerized environment setup
+- **WebSockets** – Low-latency data transmission between services
 
 ---
 
@@ -55,7 +56,9 @@ docker-compose up --build
 - Fetches real-time data from exchanges: **Binance**, **Bybit**, **KuCoin**
 - Stores data in a **PostgreSQL** database
 - Provides real-time price monitoring and alerts via a **Streamlit dashboard**
-- Uses **LSTM models** for price change predictions
+- Uses LSTM models trained on 500 days of hourly data to predict price movements up to 24 hours ahead for selected cryptocurrencies
+⚠️ Note: These predictions should be interpreted with caution, as short-term price movements are inherently difficult to predict accurately
+- Kafka and WebSocket integration enables ultra-low-latency processing and detection of price discrepancies across exchanges
 
 ---
 

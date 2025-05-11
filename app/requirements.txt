@@ -1,0 +1,10 @@
+numpy
+scikit-learn
+pandas
+tensorflow
+joblib
+psycopg2
+streamlit
+plotly
+websocket-client
+kafka-python

@@ -86,61 +86,84 @@ with tab1:
 # Tab 2: Prediction
 with tab2:
     st.header("🔮 Cryptocurrency Price Forecast")
-    symbol = st.selectbox("Select Cryptocurrency", cryptos, key='symbol222')
+    symbol = st.selectbox("Select Cryptocurrency", cryptos, key='symbol_crypto')
+    forecast_length = st.selectbox("Select Cryptocurrency", ['Short-Term', 'Long-Term'], key='forecast')
+    
+    if forecast_length == 'Short-Term':
+        freq = '1h'
+        sequence_length = 24
+        n_days = 1
+    else:
+        freq = '1d'
+        sequence_length = 14
+        n_days = 14
+        
     chart_container = st.empty()
     with chart_container:
-        if st.button("Load Model and Predict"):
-            try:
-                st.write(f"Loading model for {symbol}...")
-                model, scaler = load_model_and_scaler(symbol)
-                if not model or not scaler:
-                    st.error("Failed to load model or scaler for the selected cryptocurrency.")
-                if 'chart_count' not in st.session_state:
-                    st.session_state.chart_count = 0
-                sequence_length = 24
-                end_time = int(time.time() * 1000)
-                start_time = int((time.time() - 60 * 60 * 24) * 1000)
-                if start_time >= end_time:
-                    st.error("Invalid time range for data retrieval.")
-                df = data_for_prediction(symbol, start_time=start_time, end_time=end_time)
-                if df is None or df.empty or len(df) < sequence_length:
-                    st.error("Insufficient or no historical data available for prediction.")
-                start_prices = df['close'].values[-sequence_length:]
-                start_prices = start_prices.reshape(-1, 1)
-                predicted_prices = predict_future_prices(start_prices, model, scaler, sequence_length=sequence_length)
-                last_time = df.index[-1]
-                history_times = df.index[-sequence_length:]
-                future_times = pd.date_range(start=last_time, periods=sequence_length, freq='1h')
-                df_history = pd.DataFrame({
-                    'timestamp': history_times,
-                    'price': start_prices.flatten(),
-                    'type': ['History'] * len(history_times)
-                })
-                df_future = pd.DataFrame({
-                    'timestamp': future_times,
-                    'price': predicted_prices.flatten(),
-                    'type': ['Prediction'] * len(future_times)
-                })
-                df_plot = pd.concat([df_history, df_future], ignore_index=True)
-                fig = px.line(
-                    df_plot,
-                    x="timestamp",
-                    y="price",
-                    color="type",
-                    title=f"Price Prediction for {symbol}",
-                    template="plotly_white",
-                    color_discrete_map={'History': 'red', 'Prediction': 'green'}
-                )
-                fig.update_layout(
-                    xaxis_title="Time",
-                    yaxis_title="Price",
-                    font=dict(size=12),
-                    legend_title="Data Type"
-                )
-                st.plotly_chart(fig, key=f"chart_{st.session_state.chart_count}")
-                st.session_state.chart_count += 1
-            except Exception as e:
-                st.error(f"An unexpected error occurred: {str(e)}")
+        try:
+            st.write(f"Loading model for {symbol}...")
+            model, scaler = load_model_and_scaler(symbol, forecast_length)
+            if not model or not scaler:
+                st.error("Failed to load model or scaler for the selected cryptocurrency.")
+            if 'chart_count' not in st.session_state:
+                st.session_state.chart_count = 0
+                
+            end_time = int(time.time() * 1000)
+            start_time = int((time.time() - 60 * 60 * 24 * n_days) * 1000)
+            
+            if start_time >= end_time:
+                st.error("Invalid time range for data retrieval.")
+                
+            df = data_for_prediction(symbol, start_time=start_time, end_time=end_time, interval = freq)
+            df['close'] = pd.to_numeric(df['close'], errors='coerce')
+            
+            if df is None or df.empty or len(df) < sequence_length:
+                st.error("Insufficient or no historical data available for prediction.")
+                
+            start_prices = df['close'].values[-sequence_length:]
+            start_prices = start_prices.reshape(-1, 1)
+            
+            predicted_prices = predict_future_prices(start_prices, model, scaler, sequence_length=sequence_length)
+            
+            last_time = df.index[-1]
+            history_times = df.index[-sequence_length:]
+            future_times = pd.date_range(start=last_time, periods=sequence_length, freq=freq)
+
+            
+            df_history = pd.DataFrame({
+                'timestamp': history_times,
+                'price': start_prices.flatten(),
+                'type': ['History'] * len(history_times)
+            })
+            df_future = pd.DataFrame({
+                'timestamp': future_times,
+                'price': predicted_prices.flatten(),
+                'type': ['Prediction'] * len(future_times)
+            })
+            
+            df_plot = pd.concat([df_history, df_future], ignore_index=True)
+            df_plot.sort_values(by="timestamp", inplace=True)
+
+            fig = px.line(
+                df_plot,
+                x="timestamp",
+                y="price",
+                color="type",
+                title=f"Price Prediction for {symbol}",
+                template="plotly_white",
+                color_discrete_map={'History': 'red', 'Prediction': 'green'}
+            )
+            fig.update_layout(
+                xaxis_title="Time",
+                yaxis_title="Price",
+                font=dict(size=12),
+                legend_title="Data Type"
+            )
+            st.plotly_chart(fig, key=f"chart_{st.session_state.chart_count}")
+            st.session_state.chart_count += 1
+            
+        except Exception as e:
+            st.error(f"An unexpected error occurred: {str(e)}")
 
 # Tab 3: Alerts
 with tab3:

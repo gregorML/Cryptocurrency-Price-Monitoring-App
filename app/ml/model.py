@@ -6,9 +6,10 @@ import pandas as pd
 import requests
 
 @st.cache_resource
-def load_model_and_scaler(symbol):
-    model_path = f'models/model_{symbol}.keras'
-    scaler_path = f'models/scaler_{symbol}.pkl'
+def load_model_and_scaler(symbol, forecast_length):
+    forecast_length = forecast_length.replace("-", "_").lower()
+    model_path = f'models/model_{symbol}_{forecast_length}.keras'
+    scaler_path = f'models/scaler_{symbol}_{forecast_length}.pkl'
     if not os.path.exists(model_path) or not os.path.exists(scaler_path):
         st.error(f"Missing model or scaler for {symbol}. Please check if the files are available.")
         return None, None
@@ -24,7 +25,7 @@ def predict_future_prices(start_prices, model, scaler, sequence_length):
     pred = scaler.inverse_transform(pred)
     return pred
     
-def data_for_prediction(symbol, interval='1h', limit=1000, start_time=None, end_time=None):
+def data_for_prediction(symbol, interval, limit=1000, start_time=None, end_time=None):
     url = 'https://api.binance.com/api/v1/klines'
     symbol = symbol + "USDT"
     params = {

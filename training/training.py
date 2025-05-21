@@ -21,7 +21,7 @@ def prepare_lstm_data(data, sequence_length, future_length):
     return np.array(X), np.array(y), scaler
 
 def train_model(symbol, model_path, scaler_path, sequence_length, future_length, exchange='binance'):
-    df = pd.read_csv(f"{symbol}_30days.csv")
+    df = pd.read_csv(f"{symbol}_data.csv")
     prices = df['close'].values
     X, y, scaler = prepare_lstm_data(prices, sequence_length, future_length)
 
@@ -67,8 +67,8 @@ def train_model(symbol, model_path, scaler_path, sequence_length, future_length,
 
 
 
-n = 24
-m = 24
-train_model(symbol='BTC', model_path='model_BTC2.keras', scaler_path='scaler_BTC2.pkl', sequence_length = n, future_length = m)
-train_model(symbol='ETH', model_path='model_ETH.keras', scaler_path='scaler_ETH.pkl', sequence_length = n, future_length = m)
-train_model(symbol='LTC', model_path='model_LTC.keras', scaler_path='scaler_LTC.pkl', sequence_length = n, future_length = m)
+n = 14
+m = 14
+train_model(symbol='BTC', model_path='model_BTC2_long_term.keras', scaler_path='scaler_BTC2_long_term.pkl', sequence_length = n, future_length = m)
+train_model(symbol='ETH', model_path='model_ETH_long_term.keras', scaler_path='scaler_ETH_long_term.pkl', sequence_length = n, future_length = m)
+train_model(symbol='LTC', model_path='model_LTC_long_term.keras', scaler_path='scaler_LTC_long_term.pkl', sequence_length = n, future_length = m)

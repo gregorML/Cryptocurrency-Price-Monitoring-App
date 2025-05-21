@@ -2,7 +2,7 @@ import requests
 import pandas as pd
 import time
 
-def get_binance_data(symbol, interval='1h', limit=1000, start_time=None, end_time=None):
+def get_binance_data(symbol, interval, limit=1000, start_time=None, end_time=None):
     url = 'https://api.binance.com/api/v1/klines'
     
     params = {
@@ -38,7 +38,7 @@ def get_binance_data(symbol, interval='1h', limit=1000, start_time=None, end_tim
         print(f"Error during the request: {e}")
         return pd.DataFrame()
 
-def fetch_full_data(symbol, interval='1h', total_days=365):
+def fetch_full_data(symbol, interval, total_days=365):
 
     end_time = int(time.time() * 1000)
     start_time = int((time.time() - 60 * 60 * 24 * total_days) * 1000)
@@ -61,17 +61,17 @@ def fetch_full_data(symbol, interval='1h', total_days=365):
         return pd.DataFrame()
 
 
-btc_data = fetch_full_data('BTCUSDT', total_days=500)
+btc_data = fetch_full_data('BTCUSDT', interval = '1d', total_days=2000)
 if not btc_data.empty:
-    btc_data.to_csv('BTC_500days.csv')
+    btc_data.to_csv('BTC_data.csv')
 
-eth_data = fetch_full_data('ETHUSDT', total_days=500)
+eth_data = fetch_full_data('ETHUSDT', interval = '1d', total_days=2000)
 if not eth_data.empty:
-    eth_data.to_csv('ETH_500days.csv')
+    eth_data.to_csv('ETH_data.csv')
 
-ltc_data = fetch_full_data('LTCUSDT', total_days=500)
+ltc_data = fetch_full_data('LTCUSDT', interval = '1d', total_days=2000)
 if not ltc_data.empty:
-    ltc_data.to_csv('LTC_500days.csv')
+    ltc_data.to_csv('LTC_data.csv')
 
 
 

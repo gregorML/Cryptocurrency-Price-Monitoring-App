@@ -39,8 +39,8 @@ with tab1:
                 default=['binance'],
                 key="exchanges")
             today = datetime.date.today()
-            default_start_time = datetime.time(9, 0)
-            default_end_time = datetime.time(17, 0)
+            default_start_time = datetime.time(0, 0)
+            default_end_time = datetime.time(23, 0)
             col11, col21 = st.columns(2)
             with col11:
                 start_date = st.date_input("Start date:", value=today, key='sd1')
@@ -86,8 +86,11 @@ with tab1:
 # Tab 2: Prediction
 with tab2:
     st.header("🔮 Cryptocurrency Price Forecast")
-    symbol = st.selectbox("Select Cryptocurrency", cryptos, key='symbol_crypto')
-    forecast_length = st.selectbox("Select Cryptocurrency", ['Short-Term', 'Long-Term'], key='forecast')
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        symbol = st.selectbox("Select Cryptocurrency", cryptos, key='symbol_crypto')
+    with col2:
+        forecast_length = st.selectbox("Select Cryptocurrency", ['Short-Term', 'Long-Term'], key='forecast')
     
     if forecast_length == 'Short-Term':
         freq = '1h'

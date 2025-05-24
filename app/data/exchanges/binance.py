@@ -19,13 +19,11 @@ producer = KafkaProducer(
 BINANCE_WS_URL = "wss://stream.binance.com:9443/stream?streams="
 
 def build_stream_url():
-    """Build the WebSocket URL for Binance with multiple streams."""
     streams = [f"{crypto.lower()}usdt@ticker" for crypto in crypto_list]
     stream_path = "/".join(streams)
     return BINANCE_WS_URL + stream_path
 
 def on_message(ws, message):
-    """Handle incoming WebSocket messages."""
     try:
         data = json.loads(message)
         if 'data' in data and 's' in data['data']:
@@ -41,22 +39,18 @@ def on_message(ws, message):
         log.error(f"Error processing message: {e}")
 
 def on_error(ws, error):
-    """Handle WebSocket errors."""
     log.error(f"WebSocket error: {error}")
 
 def on_close(ws, close_status_code, close_msg):
-    """Handle WebSocket closure."""
     log.info(f"WebSocket closed: {close_status_code} - {close_msg}")
     log.info("Attempting to reconnect...")
     time.sleep(5)
     start_websocket()
 
 def on_open(ws):
-    """Binance uses URL-based subscription; nothing needed here."""
     log.info("WebSocket connection opened.")
 
 def start_websocket():
-    """Start the WebSocket client."""
     try:
         ws_url = build_stream_url()
         ws = websocket.WebSocketApp(
@@ -70,7 +64,5 @@ def start_websocket():
     except Exception as e:
         log.error(f"WebSocket client error: {e}")
         
-
-if __name__ == "__main__":
-    start_websocket()
+start_websocket()
 

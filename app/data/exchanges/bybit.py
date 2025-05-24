@@ -18,7 +18,6 @@ producer = KafkaProducer(
 BYBIT_WS_URL = "wss://stream.bybit.com/v5/public/spot"
 
 def on_message(ws, message):
-    """Handle incoming WebSocket messages."""
     try:
         data = json.loads(message)
         if 'topic' in data and 'data' in data:
@@ -40,11 +39,10 @@ def on_error(ws, error):
     log.error(f"WebSocket error: {error}")
 
 def on_close(ws, close_status_code, close_msg):
-    """Handle WebSocket closure."""
     log.info(f"WebSocket closed: {close_status_code} - {close_msg}")
     log.info("Attempting to reconnect...")
-    time.sleep(5)  # Delay before reconnecting
-    start_websocket()  # Reconnect
+    time.sleep(5)
+    start_websocket()
 
 def on_open(ws):
     try:
@@ -59,7 +57,6 @@ def on_open(ws):
         log.error(f"Error on open: {e}")
 
 def start_websocket():
-    """Start the WebSocket client."""
     try:
         ws = websocket.WebSocketApp(
             BYBIT_WS_URL,
@@ -72,6 +69,5 @@ def start_websocket():
     except Exception as e:
         log.error(f"WebSocket client error: {e}")
 
-if __name__ == "__main__":
-    start_websocket()
+start_websocket()
 

@@ -21,7 +21,6 @@ producer = KafkaProducer(
 KUCOIN_WS_TOKEN_URL = "https://api.kucoin.com/api/v1/bullet-public"
 
 def get_ws_details():
-    """Fetch KuCoin WebSocket connection details."""
     try:
         response = requests.post(KUCOIN_WS_TOKEN_URL)
         res_json = response.json()
@@ -36,13 +35,12 @@ def get_ws_details():
 def on_message(ws, message):
     try:
         msg = json.loads(message)
-
         if msg.get("type") == "message" and msg.get("subject") == "trade.ticker":
             data = msg.get("data", {})
             topic = msg.get("topic", "")
 
             if ":" in topic:
-                full_symbol = topic.split(":")[1]  # "BTC-USDT"
+                full_symbol = topic.split(":")[1]
                 symbol = full_symbol.replace('-USDT', '')
             else:
                 symbol = None
@@ -94,7 +92,6 @@ def on_open(ws):
         log.error(f"Error on open: {e}")
 
 def start_websocket():
-    """Start the KuCoin WebSocket connection."""
     try:
         ws_details = get_ws_details()
         if not ws_details:
@@ -115,6 +112,5 @@ def start_websocket():
     except Exception as e:
         log.error(f"WebSocket client error: {e}")
 
-if __name__ == "__main__":
-    start_websocket()
+start_websocket()
 

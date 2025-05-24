@@ -4,7 +4,7 @@ import time
 from kafka import KafkaConsumer, KafkaProducer
 from config.config import load_config
 
-CONFIG_FILE = "config.json"f
+CONFIG_FILE = "config.json"
 producer = KafkaProducer(
     bootstrap_servers=os.environ.get("KAFKA_BROKER", "kafka:9093"),
     value_serializer=lambda v: json.dumps(v).encode('utf-8')
@@ -31,11 +31,10 @@ def analyze(symbol):
     highest_exchange, (highest_price, _) = sorted_prices[-1]
 
     spread_abs = highest_price - lowest_price
-    spread_pct = spread_abs / lowest_price
-
+    spread_pct = (spread_abs / lowest_price) * 100
     spread_threshold = load_config()
     now = time.time()
-
+    
     last_data = last_alerts.get(symbol)
     if last_data:
         last_spread = last_data[0]
@@ -44,7 +43,7 @@ def analyze(symbol):
         last_spread = None
         last_time = None
 
-    delta = 0.001
+    delta = 0.1
     min_interval = 1.0
 
     if spread_pct >= spread_threshold and (last_spread is None or abs(spread_pct - last_spread) > delta or now - last_time > min_interval):
@@ -60,7 +59,7 @@ def analyze(symbol):
             "symbol": symbol,
             "timestamp": timestamp,
             "spread_abs": spread_abs,
-            "spread_pct": round(spread_pct, 4),
+            "spread_pct": spread_pct,
             "lowest_exchange": lowest_exchange,
             "lowest_price": lowest_price,
             "highest_exchange": highest_exchange,

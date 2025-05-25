@@ -39,6 +39,13 @@ The system allows users to:
 
 ---
 
+## LSTM Models
+- Short-Term Model: Trained on 500 days of hourly data, predicts next 24 hours.
+- Long-Term Model: Trained on 2000 days of daily data, predicts next 14 days.
+- Models are trained for BTC, ETH, and LTC with MAE (0.02–0.08) and MSE (0.006–0.012) on normalized data.
+
+---
+
 ## Project Structure
 
 ```
@@ -73,16 +80,6 @@ docker-compose up --build
 
 3. **Access the application at:**
 [http://localhost:8501](http://localhost:8501)
-
----
-
-## What Does the App Do?
-
-- Fetches real-time data from exchanges: **Binance**, **Bybit**, **KuCoin**
-- Stores data in a **PostgreSQL** database
-- Provides real-time price monitoring and alerts via a **Streamlit dashboard**
-- Uses LSTM models to predict price movements for selected cryptocurrencies
-- Kafka and WebSocket integration enables ultra-low-latency processing and detection of price discrepancies across exchanges
 
 ---
 

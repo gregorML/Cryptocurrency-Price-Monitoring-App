@@ -86,7 +86,7 @@ docker-compose up --build
 
 ---
 
-## 🛠️ Requirements
+## Requirements
 
 - Docker and Docker Compose (for containerized setup)
 - Python 3.9 (for local development outside Docker)

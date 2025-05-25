@@ -24,7 +24,22 @@ The system allows users to:
 
 ---
 
-## 🗂️ Project Structure
+## Features
+- Real-Time Data Collection: Fetches live price data from Binance, ByBit, and KuCoin via WebSocket APIs.
+- Apache Kafka Integration: Streams data through Kafka topics (MarketData and Alerts) for efficient processing.
+- Price Anomaly Detection: Identifies significant price differences across exchanges and generates alerts.
+- LSTM-Based Price Prediction: Provides short-term (24-hour) and long-term (14-day) price forecasts for BTC, ETH, and LTC.
+- Interactive Web Interface: Built with Streamlit, featuring tabs for:
+-- Price History: Visualize historical price data.
+-- Prediction: Display LSTM model predictions.
+-- Alerts: Show price discrepancy alerts.
+-- Settings: Configure refresh rates and anomaly thresholds.
+- Containerized Deployment: Uses Docker Compose to run Kafka, Zookeeper, PostgreSQL, and Streamlit in isolated containers.
+- PostgreSQL Storage: Stores price data and alerts for historical analysis.
+
+---
+
+## Project Structure
 
 ```
 ├── app/                  # Main Streamlit application

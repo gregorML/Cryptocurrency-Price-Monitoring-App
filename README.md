@@ -1,16 +1,26 @@
-# Cryptocurrency Price Monitoring App 🚀
+# Real-Time Cryptocurrency Price Monitoring System
 
-A real-time cryptocurrency price monitoring application built with Apache Kafka, PostgreSQL, and Streamlit.
+## Overview
+This project is a real-time cryptocurrency price monitoring system that collects, processes, and visualizes price data from multiple exchanges (Binance, ByBit, KuCoin) using Apache Kafka as the core message broker. It includes features for price prediction using LSTM models, anomaly detection for price differences across exchanges, and an interactive web interface built with Streamlit. The entire system is containerized using Docker Compose for easy deployment and scalability.
+
+The system allows users to:
+
+- Monitor real-time cryptocurrency prices
+- Visualize historical price data
+- Receive alerts for significant price discrepancies between exchanges
+- View price predictions based on trained LSTM models
+- Configure system settings dynamically
 
 ---
 
-## 📦 Key Technologies
+## Technologies Used
 
 - **Kafka & Zookeeper** – Stream processing for real-time data
 - **PostgreSQL** – Database for storing market data
 - **Streamlit** – Web application for visualization and alerts
 - **Docker & Docker Compose** – Containerized environment setup
 - **WebSockets** – Low-latency data transmission between services
+- **LSTM** - RNN model built with Keras for price prediction
 
 ---
 

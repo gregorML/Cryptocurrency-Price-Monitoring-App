@@ -1,7 +1,7 @@
 import json
 
 CONFIG_FILE = "config/config.json"
-DEFAULT_SPREAD_THRESHOLD = 0.005
+DEFAULT_SPREAD_THRESHOLD = 1
 
 def load_config():
     try:

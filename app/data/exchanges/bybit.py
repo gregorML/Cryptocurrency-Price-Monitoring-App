@@ -35,7 +35,6 @@ def on_message(ws, message):
         log.error(f"Error processing message: {e}")
 
 def on_error(ws, error):
-    """Handle WebSocket errors."""
     log.error(f"WebSocket error: {error}")
 
 def on_close(ws, close_status_code, close_msg):

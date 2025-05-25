@@ -20,8 +20,6 @@ def create_tables():
             );
             """
             cur.execute(create_table_query_market_prices)
-        else:
-            print("Table 'market_prices' already exists.")
 
         cur.execute("""SELECT to_regclass('public.alerts');""")
         table_exists_alerts = cur.fetchone()[0]

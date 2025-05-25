@@ -90,7 +90,7 @@ with tab2:
     with col1:
         symbol = st.selectbox("Select Cryptocurrency", cryptos, key='symbol_crypto')
     with col2:
-        forecast_length = st.selectbox("Select Cryptocurrency", ['Short-Term', 'Long-Term'], key='forecast')
+        forecast_length = st.selectbox("Select Forecast Horizon", ['Short-Term', 'Long-Term'], key='forecast')
     
     if forecast_length == 'Short-Term':
         freq = '1h'

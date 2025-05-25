@@ -25,7 +25,6 @@ def train_model(symbol, model_path, scaler_path, sequence_length, future_length,
     prices = df['close'].values
     X, y, scaler = prepare_lstm_data(prices, sequence_length, future_length)
 
-    # Time-based split: 60% train, 20% val, 20% test
     total_len = len(X)
     train_end = int(total_len * 0.6)
     val_end = int(total_len * 0.8)
@@ -47,7 +46,6 @@ def train_model(symbol, model_path, scaler_path, sequence_length, future_length,
     opt = Adam(learning_rate=0.001)
     model.compile(optimizer=opt, loss='mae', metrics=['mse'])
 
-    # Early stopping callback
     early_stop = EarlyStopping(monitor='val_loss', patience=2, restore_best_weights=True)
 
     model.fit(

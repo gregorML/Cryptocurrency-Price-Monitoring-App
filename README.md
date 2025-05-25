@@ -30,10 +30,10 @@ The system allows users to:
 - Price Anomaly Detection: Identifies significant price differences across exchanges and generates alerts.
 - LSTM-Based Price Prediction: Provides short-term (24-hour) and long-term (14-day) price forecasts for BTC, ETH, and LTC.
 - Interactive Web Interface: Built with Streamlit, featuring tabs for:
--- Price History: Visualize historical price data.
--- Prediction: Display LSTM model predictions.
--- Alerts: Show price discrepancy alerts.
--- Settings: Configure refresh rates and anomaly thresholds.
+  - Price History: Visualize historical price data.
+  - Prediction: Display LSTM model predictions.
+  - Alerts: Show price discrepancy alerts.
+  - Settings: Configure refresh rates and anomaly thresholds.
 - Containerized Deployment: Uses Docker Compose to run Kafka, Zookeeper, PostgreSQL, and Streamlit in isolated containers.
 - PostgreSQL Storage: Stores price data and alerts for historical analysis.
 
@@ -58,7 +58,7 @@ The system allows users to:
 
 ---
 
-## ⚙️ Running the Project
+## Running the Project
 
 1. **Clone the repository:**
 ```bash
@@ -76,12 +76,12 @@ docker-compose up --build
 
 ---
 
-## 🧠 What Does the App Do?
+## What Does the App Do?
 
 - Fetches real-time data from exchanges: **Binance**, **Bybit**, **KuCoin**
 - Stores data in a **PostgreSQL** database
 - Provides real-time price monitoring and alerts via a **Streamlit dashboard**
-- Uses LSTM models trained on 500 days of hourly data to predict price movements up to 24 hours ahead for selected cryptocurrencies (⚠️ Note: These predictions should be interpreted with caution, as short-term price movements are inherently difficult to predict accurately)
+- Uses LSTM models to predict price movements for selected cryptocurrencies
 - Kafka and WebSocket integration enables ultra-low-latency processing and detection of price discrepancies across exchanges
 
 ---
